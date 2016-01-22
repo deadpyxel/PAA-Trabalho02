@@ -1,5 +1,4 @@
 import sys
-import time
 
 
 def gk(i, j):
@@ -9,7 +8,7 @@ def gk(i, j):
 def matrix_chain_order(p):
     """
     :param p: array com as dimensões das matrizes
-    :return: multiplicações, sequencia de multiplicações
+    :return: numero de multiplicações, sequencia de multiplicações
     """
     n = len(p) - 1
     m, s = {}, {}
@@ -39,15 +38,7 @@ def get_optimal_parents(s, i, j):
         return res
 
 
-# funcao para teste do algoritmo, deletar quando fizer a integraçao
-def main():
-    p = [30, 35, 15, 5, 10, 20, 25, 5, 16, 34, 28, 19, 66, 34, 78, 55, 23]
+def mcm_main(p):
     m, s = matrix_chain_order(p)
-    print('Total de multiplicacoes：', m[gk(1, len(p) - 1)])
-    print('Sequencia: ', get_optimal_parents(s, 1, len(p) - 1))
-
-
-if __name__ == '__main__':
-    b = time.time()
-    main()
-    print('CPU time:', time.time() - b)
+    total_mult, sequencia = m[gk(1, len(p) - 1)], get_optimal_parents(s, 1, len(p) - 1)
+    return total_mult, sequencia

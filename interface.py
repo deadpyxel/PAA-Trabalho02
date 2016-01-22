@@ -2,6 +2,7 @@ from gi.repository import Gtk  # importa recusrsos para interface gráfica
 
 from huffman import huffman_encode  # importa a função de enconding para codificação de huffman
 from lcs import lcs  # importa a função principal da lcs
+from matrix_chain_mult import mcm_main
 
 
 # TODO integrar chain Matrix Multiplication com a UI
@@ -34,11 +35,11 @@ class MainWindow(Gtk.Window):
         self.lbl_inp_text = Gtk.Label("Digite o texto para codificação e compressão: ")
         self.txt_inp_text = Gtk.Entry()
         self.hbox_btn = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
-        self.btn_lcs = Gtk.Button(label="Codificar e Comprimir")
-        self.btn_lcs.connect("clicked", self.huffman_call)  # executa a codificação
+        self.btn_huff = Gtk.Button(label="Codificar e Comprimir")
+        self.btn_huff.connect("clicked", self.huffman_call)  # executa a codificação
         self.btn_clear = Gtk.Button(label="Limpar Campo")
         self.btn_clear.connect("clicked", self.clear)  # limpa os campos
-        self.hbox_btn.pack_start(self.btn_lcs, True, True, 0)
+        self.hbox_btn.pack_start(self.btn_huff, True, True, 0)
         self.hbox_btn.add(self.btn_clear)
         self.page2.add(label)
         self.page2.pack_start(self.lbl_inp_text, True, True, 0)
@@ -93,12 +94,26 @@ class MainWindow(Gtk.Window):
         self.notebook.append_page(self.page5, Gtk.Label("LCS"))
 
         # Chain Matrix Multiplication
-        self.page6 = Gtk.Box()
+        self.page6 = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         self.page6.set_border_width(10)
-        label = Gtk.Label("Aqui tera o conteudo do sexto exercicio do trabalho...")
+        label = Gtk.Label()
+        label.set_markup("<big><b>Multiplicação em Cadeia de Matrizes</b></big>")
         label.set_line_wrap(True)
         label.set_justify(Gtk.Justification.FILL)
+        # form
+        self.lbl_inp_mcm = Gtk.Label("Digite a dimensão das matrizes, separadas por vírgula: ")
+        self.txt_inp_mcm = Gtk.Entry()
+        self.hbox_btn = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        self.btn_mcm = Gtk.Button(label="Processar Cadeia de Matrizes")
+        self.btn_mcm.connect("clicked", self.mcm_call)  # executa o mcm
+        self.btn_clear = Gtk.Button(label="Limpar Campo")
+        self.btn_clear.connect("clicked", self.clear)  # limpa os campos
+        self.hbox_btn.pack_start(self.btn_mcm, True, True, 0)
+        self.hbox_btn.add(self.btn_clear)
         self.page6.add(label)
+        self.page6.pack_start(self.lbl_inp_mcm, True, True, 0)
+        self.page6.pack_start(self.txt_inp_mcm, True, True, 0)
+        self.page6.add(self.hbox_btn)
         self.notebook.append_page(self.page6, Gtk.Label("Multiplicação de Cadeia de Matrizes"))
 
     def huffman_call(self, widget):
@@ -116,10 +131,20 @@ class MainWindow(Gtk.Window):
         dialog.run()
         dialog.destroy()
 
+    def mcm_call(self, widget):
+        p = self.txt_inp_mcm.get_text()
+        p = p.split(',')
+        p = list(map(int, p))
+        print(p)
+        total_mult, seq_mult = mcm_main(p)
+        print("Total de multiplicaçoes: ", total_mult)
+        print("Cadeia de Multiplicaçoes: ", seq_mult)
+
     def clear(self, widget):
         self.txt_inp_text.set_text("")
         self.txt_grpa.set_text("")
         self.txt_grpb.set_text("")
+        self.txt_inp_mcm.set_text("")
 
 
 class DialogWindow(Gtk.Dialog):
