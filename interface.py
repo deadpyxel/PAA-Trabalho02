@@ -1,6 +1,7 @@
-from gi.repository import Gtk
+from gi.repository import Gtk  # importa recusrsos para interface gráfica
 
-from lcs import lcs
+from huffman import huffman_encode  # importa a função de enconding para codificação de huffman
+from lcs import lcs  # importa a função principal da lcs
 
 
 class MainWindow(Gtk.Window):
@@ -21,12 +22,26 @@ class MainWindow(Gtk.Window):
         self.notebook.append_page(self.page1, Gtk.Label("Associação de Tarefas"))
 
         # Huffman Coding
-        self.page2 = Gtk.Box()
+        self.page2 = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         self.page2.set_border_width(10)
-        label = Gtk.Label("Aqui tera o conteudo do segundo exercicio do trabalho...")
+        label = Gtk.Label()
+        label.set_markup("<big><b>Codificação de Huffman</b></big>")
         label.set_line_wrap(True)
         label.set_justify(Gtk.Justification.FILL)
+        # Form
+        self.lbl_inp_text = Gtk.Label("Digite o texto para codificação e compressão: ")
+        self.txt_inp_text = Gtk.Entry()
+        self.hbox_btn = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        self.btn_lcs = Gtk.Button(label="Codificar e Comprimir")
+        self.btn_lcs.connect("clicked", self.huffman_call)  # executa a codificação
+        self.btn_clear = Gtk.Button(label="Limpar Campo")
+        self.btn_clear.connect("clicked", self.clear)  # limpa os campos
+        self.hbox_btn.pack_start(self.btn_lcs, True, True, 0)
+        self.hbox_btn.add(self.btn_clear)
         self.page2.add(label)
+        self.page2.pack_start(self.lbl_inp_text, True, True, 0)
+        self.page2.pack_start(self.txt_inp_text, True, True, 0)
+        self.page2.pack_start(self.hbox_btn, True, True, 0)
         self.notebook.append_page(self.page2, Gtk.Label("Codificação de Huffman"))
 
         # Fractional Knapsack
@@ -60,19 +75,19 @@ class MainWindow(Gtk.Window):
         self.txt_grpa = Gtk.Entry()
         self.lbl_grpb = Gtk.Label("String para a busca: ")
         self.txt_grpb = Gtk.Entry()
-        hbox_btn = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        self.hbox_btn = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         self.btn_lcs = Gtk.Button(label="Verificar Substrings")
         self.btn_lcs.connect("clicked", self.lcs_call)  # executa o lcs
         self.btn_clear = Gtk.Button(label="Limpar Campos")
         self.btn_clear.connect("clicked", self.clear)  # limpa os campos
-        hbox_btn.pack_start(self.btn_lcs, True, True, 0)
-        hbox_btn.add(self.btn_clear)
+        self.hbox_btn.pack_start(self.btn_lcs, True, True, 0)
+        self.hbox_btn.add(self.btn_clear)
         self.page5.add(label)
         self.page5.pack_start(self.lbl_grpa, True, True, 0)
         self.page5.pack_start(self.txt_grpa, True, True, 0)
         self.page5.pack_start(self.lbl_grpb, True, True, 0)
         self.page5.pack_start(self.txt_grpb, True, True, 0)
-        self.page5.add(hbox_btn)
+        self.page5.add(self.hbox_btn)
         self.notebook.append_page(self.page5, Gtk.Label("LCS"))
 
         # Chain Matrix Multiplication
@@ -84,6 +99,13 @@ class MainWindow(Gtk.Window):
         self.page6.add(label)
         self.notebook.append_page(self.page6, Gtk.Label("Multiplicação de Cadeia de Matrizes"))
 
+    def huffman_call(self, widget):
+        inp_str = self.txt_inp_text.get_text()
+        out_code, out_encoded = huffman_encode(inp_str)
+        # print(out_code, out_encoded)
+        print("Tamanho original da string: ", len(inp_str))
+        print("Tamanho após codificação: ", len(out_encoded))
+
     def lcs_call(self, widget):
         str_a = self.txt_grpa.get_text()
         str_b = self.txt_grpb.get_text()
@@ -93,6 +115,7 @@ class MainWindow(Gtk.Window):
         dialog.destroy()
 
     def clear(self, widget):
+        self.txt_inp_text.set_text("")
         self.txt_grpa.set_text("")
         self.txt_grpb.set_text("")
 

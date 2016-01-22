@@ -82,14 +82,16 @@ def check(pair, word):
         return pair
 
 
+'''
 if __name__ == '__main__':
-    entrada = '''
+    entrada = \'\'\'
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue odio sapien, ac vestibulum lacus euismod vel.
     Quisque semper convallis justo, a porttitor metus dignissim nec. Sed iaculis metus at turpis volutpat, at cursus
     neque gravida. Pellentesque sit amet tortor rhoncus, sagittis justo et, laoreet sem. Duis porttitor blandit mattis.
     Aliquam consequat varius imperdiet. Nullam aliquam id nunc nec egestas.
-    '''
+    \'\'\'
 
     code, encoded = huffman_encode(entrada)
     print('Tamanho Original:', len(entrada))
     print('Tamanho codificado:', len(encoded))
+'''
