@@ -4,6 +4,8 @@ from huffman import huffman_encode  # importa a função de enconding para codif
 from lcs import lcs  # importa a função principal da lcs
 
 
+# TODO integrar chain Matrix Multiplication com a UI
+
 class MainWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="PAA - Trabalho 02")
